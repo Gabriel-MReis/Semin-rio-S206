@@ -46,3 +46,17 @@ Obeservações:
 4. Na lista filtrada de extensões disponíveis, selecione a extensão rotulada "Flutter" publicada pela dartcode.org.
 
 5. Para instalar a extensão, selecione Instalar.
+
+## Crie o aplicativo
+
+1. Abra a paleta de comandos no VSCode.
+
+2. Digite “flutter” e selecione Flutter: New Project.
+
+3. Selecione Aplicativo.
+
+4. Crie ou selecione o diretório pai para a nova pasta do projeto.
+
+5. Insira um nome de projeto, como my_app, e pressione Enter.
+
+6. Aguarde a conclusão da criação do projeto e o main.dart arquivo aparecer.
