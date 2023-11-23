@@ -35,7 +35,7 @@ Obeservações:
 7. Em uma janela do console que tem o diretório Flutter no caminho (veja acima), execute o seguinte comando para ver se há alguma dependência de plataforma necessária para concluir a configuração: 
 ```C:\src\flutter>flutter doctor```
 
-## Instalar Extensão C# no VScode
+## Instalar Extensão Flutter no VScode
 
 1. Verifique se o Visual Studio Code está aberto.
 
