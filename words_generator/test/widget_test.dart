@@ -1,30 +1,36 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:words_generator/main.dart';
+import 'package:integration_test/integration_test.dart';
+import 'package:words_generator/main.dart' as app;
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  group('Teste de integração 1', () {
+    testWidgets('Gere 5 palavras diferentes e remove elas na pagina favorite',
+        (WidgetTester tester) async {
+      app.main();
+      await tester.pumpAndSettle();
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+      // Gere 5 palavras pressionando "Next"
+      for (var i = 0; i < 5; i++) {
+        await tester.tap(find.text('Like'));
+        await tester.tap(find.text('Next'));
+        await Future.delayed(const Duration(seconds: 1));
+        print('Palavra gerada e marcada ${i + 1}');
+      }
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+      // Pressione o botão "Favorites"
+      await tester.tap(find.text('Favorites'));
+      await tester.pumpAndSettle();
+      print('Botão "Favorites" pressionado');
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+      // Clique nos ícones de lixo
+      for (var i = 0; i < 5; i++) {
+        await tester.tap(find.byIcon(Icons.delete_outline).first);
+        print('Ícone de lixo ${i + 1} pressionado');
+      }
+
+      print('Teste concluído com sucesso!');
+    });
   });
 }
