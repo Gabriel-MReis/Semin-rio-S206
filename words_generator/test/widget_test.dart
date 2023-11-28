@@ -1,36 +1,57 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:integration_test/integration_test.dart';
-import 'package:words_generator/main.dart' as app;
+import 'package:words_generator/main.dart';
 
 void main() {
-  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
-  group('Teste de integração 1', () {
-    testWidgets('Gere 5 palavras diferentes e remove elas na pagina favorite',
-        (WidgetTester tester) async {
-      app.main();
-      await tester.pumpAndSettle();
+  group('MyAppState Tests', () {
+    test('Initial state', () {
+      final myAppState = MyAppState();
 
-      // Gere 5 palavras pressionando "Next"
-      for (var i = 0; i < 5; i++) {
-        await tester.tap(find.text('Like'));
-        await tester.tap(find.text('Next'));
-        await Future.delayed(const Duration(seconds: 1));
-        print('Palavra gerada e marcada ${i + 1}');
-      }
+      // Ensure the initial state is correct
+      expect(myAppState.current, isNotNull);
+      expect(myAppState.favorites, isEmpty);
+    });
 
-      // Pressione o botão "Favorites"
-      await tester.tap(find.text('Favorites'));
-      await tester.pumpAndSettle();
-      print('Botão "Favorites" pressionado');
+    test('Toggle favorite', () {
+      final myAppState = MyAppState();
+      final initialPair = myAppState.current;
 
-      // Clique nos ícones de lixo
-      for (var i = 0; i < 5; i++) {
-        await tester.tap(find.byIcon(Icons.delete_outline).first);
-        print('Ícone de lixo ${i + 1} pressionado');
-      }
+      // Toggle the favorite status
+      myAppState.toggleFavorite();
 
-      print('Teste concluído com sucesso!');
+      // Ensure the favorite status is toggled
+      expect(myAppState.favorites.length, 1);
+      expect(myAppState.favorites.contains(initialPair), true);
+
+      // Toggle again to remove from favorites
+      myAppState.toggleFavorite();
+
+      // Ensure the pair is removed from favorites
+      expect(myAppState.favorites, isEmpty);
+    });
+
+    test('Remove favorite', () {
+      final myAppState = MyAppState();
+      final initialPair = myAppState.current;
+
+      // Toggle the favorite status
+      myAppState.toggleFavorite();
+
+      // Remove the favorite
+      myAppState.removeFavorite(initialPair);
+
+      // Ensure the pair is removed from favorites
+      expect(myAppState.favorites, isEmpty);
+    });
+
+    test('Get next pair', () {
+      final myAppState = MyAppState();
+      final initialPair = myAppState.current;
+
+      // Get the next pair
+      myAppState.getNext();
+
+      // Ensure the current pair is changed
+      expect(myAppState.current, isNot(equals(initialPair)));
     });
   });
 }
